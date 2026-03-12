@@ -1,0 +1,177 @@
+name: Compras
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/purchases
+    metadata:
+      custom: []
+      groupName: Compras
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Realizar Compra'
+      description: |-
+        Endpoint público para processar um pagamento. O cliente é criado ou recuperado pelo e-mail.
+        O valor total é calculado no servidor com base nos preços dos produtos.
+        A cobrança é processada automaticamente pelo gateway ativo com maior prioridade.
+
+        Obs: Para simular erro de dados inválidos do cartão:
+             - No Gateway Primário (1): use o cvv 100 ou 200.
+             - No Gateway Primário (1): use o cvv 200 ou 300.
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      client:
+        custom: []
+        name: client
+        description: ''
+        required: true
+        example: []
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      client.name:
+        custom: []
+        name: client.name
+        description: 'Nome igual do cartão. validation.max.'
+        required: true
+        example: 'João da Silva'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      client.email:
+        custom: []
+        name: client.email
+        description: 'E-mail usado no cadastro. validation.email validation.max.'
+        required: true
+        example: joao@email.com
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      client.cardNumber:
+        custom: []
+        name: client.cardNumber
+        description: 'Número do cartão de crédito (16 dígitos, apenas números). Must match the regex /^\d{16}$/. validation.size.'
+        required: true
+        example: '4444333311112222'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      client.cvv:
+        custom: []
+        name: client.cvv
+        description: 'Código de segurança do cartão (3 dígitos). Must match the regex /^\d{3}$/. validation.size.'
+        required: true
+        example: '123'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      products:
+        custom: []
+        name: products
+        description: validation.min.
+        required: true
+        example:
+          - []
+        type: 'object[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      'products[].id':
+        custom: []
+        name: 'products[].id'
+        description: 'ID do produto. The <code>id</code> of an existing record in the products table.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      'products[].quantity':
+        custom: []
+        name: 'products[].quantity'
+        description: 'Quantidade do produto. validation.min.'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      client:
+        name: 'João da Silva'
+        email: joao@email.com
+        cardNumber: '4444333311112222'
+        cvv: '123'
+      products:
+        -
+          id: 1
+          quantity: 2
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "id": 1,
+            "status": "approved",
+            "amount": 19998,
+            "card_last_numbers": "4242",
+            "external_id": "ext_abc123",
+            "gateway": {"id": 1, "name": "Gateway Principal", "driver": "gateway1"},
+            "client": {"id": 1, "name": "João da Silva", "email": "joao@email.com"},
+            "products": [
+              {"product_id": 1, "product_name": "Camiseta Premium", "quantity": 2, "unit_price": 9999, "subtotal": 19998}
+            ],
+            "created_at": "2026-03-11T00:00:00.000000Z"
+          }
+        headers: []
+        description: Aprovado
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "O número do cartão deve ter exatamente 16 dígitos.",
+            "errors": {
+              "client.cardNumber": ["O número do cartão deve ter exatamente 16 dígitos."],
+              "products": ["Ao menos um produto deve ser informado."]
+            }
+          }
+        headers: []
+        description: Validação
+      -
+        custom: []
+        status: 503
+        content: '{"message": "Nenhum gateway de pagamento disponível."}'
+        headers: []
+        description: 'Nenhum gateway disponível'
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

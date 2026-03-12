@@ -1,0 +1,577 @@
+name: Produtos
+description: |-
+
+  Gerenciamento do catálogo de produtos disponíveis para aposta.
+  Leitura: todos autenticados. Criação/Edição: roles `admin`, `manager`, `finance`. Exclusão: roles `admin`, `manager`.
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/products
+    metadata:
+      custom: []
+      groupName: Produtos
+      groupDescription: |-
+
+        Gerenciamento do catálogo de produtos disponíveis para aposta.
+        Leitura: todos autenticados. Criação/Edição: roles `admin`, `manager`, `finance`. Exclusão: roles `admin`, `manager`.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Listar Produtos'
+      description: 'Retorna a lista paginada de produtos ativos (20 por página).'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "current_page": 1,
+            "data": [
+              {"id": 1, "name": "Camiseta Premium", "amount": 9999, "amount_brl": "R$ 99,99", "created_at": "2026-01-01T00:00:00.000000Z"},
+              {"id": 2, "name": "Bone Exclusivo", "amount": 4990, "amount_brl": "R$ 49,90", "created_at": "2026-01-01T00:00:00.000000Z"}
+            ],
+            "per_page": 20,
+            "total": 2
+          }
+        headers: []
+        description: Sucesso
+      -
+        custom: []
+        status: 401
+        content: '{"message": "Unauthenticated."}'
+        headers: []
+        description: 'Não autenticado'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/products/{id}'
+    metadata:
+      custom: []
+      groupName: Produtos
+      groupDescription: |-
+
+        Gerenciamento do catálogo de produtos disponíveis para aposta.
+        Leitura: todos autenticados. Criação/Edição: roles `admin`, `manager`, `finance`. Exclusão: roles `admin`, `manager`.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Exibir Produto'
+      description: 'Retorna os detalhes de um produto específico.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the product.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      product:
+        custom: []
+        name: product
+        description: 'O ID do produto.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+      product: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "id": 1,
+            "name": "Camiseta Premium",
+            "amount": 9999,
+            "amount_brl": "R$ 99,99",
+            "created_at": "2026-01-01T00:00:00.000000Z"
+          }
+        headers: []
+        description: Sucesso
+      -
+        custom: []
+        status: 401
+        content: '{"message": "Unauthenticated."}'
+        headers: []
+        description: 'Não autenticado'
+      -
+        custom: []
+        status: 404
+        content: '{"message": "No query results for model [App\\Models\\Product] 99"}'
+        headers: []
+        description: 'Não encontrado'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/products
+    metadata:
+      custom: []
+      groupName: Produtos
+      groupDescription: |-
+
+        Gerenciamento do catálogo de produtos disponíveis para aposta.
+        Leitura: todos autenticados. Criação/Edição: roles `admin`, `manager`, `finance`. Exclusão: roles `admin`, `manager`.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Criar Produto'
+      description: 'Cria um novo produto no catálogo. O `amount` deve ser informado em centavos.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'Nome do produto. validation.max.'
+        required: true
+        example: 'Camiseta Premium'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      amount:
+        custom: []
+        name: amount
+        description: 'Preço do produto em centavos. Ex: 9999 = R$ 99,99. validation.min.'
+        required: true
+        example: 9999
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      name: 'Camiseta Premium'
+      amount: 9999
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "id": 3,
+            "name": "Camiseta Premium",
+            "amount": 9999,
+            "amount_brl": "R$ 99,99",
+            "created_at": "2026-03-11T00:00:00.000000Z"
+          }
+        headers: []
+        description: Criado
+      -
+        custom: []
+        status: 401
+        content: '{"message": "Unauthenticated."}'
+        headers: []
+        description: 'Não autenticado'
+      -
+        custom: []
+        status: 403
+        content: '{"message": "This action is unauthorized."}'
+        headers: []
+        description: 'Sem permissão'
+      -
+        custom: []
+        status: 422
+        content: '{"message": "O nome do produto é obrigatório.", "errors": {"name": ["O nome do produto é obrigatório."], "amount": ["O valor do produto é obrigatório."]}}'
+        headers: []
+        description: Validação
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: 'api/products/{id}'
+    metadata:
+      custom: []
+      groupName: Produtos
+      groupDescription: |-
+
+        Gerenciamento do catálogo de produtos disponíveis para aposta.
+        Leitura: todos autenticados. Criação/Edição: roles `admin`, `manager`, `finance`. Exclusão: roles `admin`, `manager`.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Atualizar Produto'
+      description: 'Atualiza um produto existente. Envie apenas os campos que deseja alterar.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the product.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      product:
+        custom: []
+        name: product
+        description: 'O ID do produto.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+      product: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'Novo nome do produto (opcional). validation.max.'
+        required: false
+        example: 'Camiseta Premium Atualizada'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      amount:
+        custom: []
+        name: amount
+        description: 'Novo preço em centavos (opcional). Ex: 11990 = R$ 119,90. validation.min.'
+        required: false
+        example: 11990
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      name: 'Camiseta Premium Atualizada'
+      amount: 11990
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "id": 1,
+            "name": "Camiseta Premium Atualizada",
+            "amount": 11990,
+            "amount_brl": "R$ 119,90",
+            "created_at": "2026-01-01T00:00:00.000000Z"
+          }
+        headers: []
+        description: Sucesso
+      -
+        custom: []
+        status: 401
+        content: '{"message": "Unauthenticated."}'
+        headers: []
+        description: 'Não autenticado'
+      -
+        custom: []
+        status: 403
+        content: '{"message": "This action is unauthorized."}'
+        headers: []
+        description: 'Sem permissão'
+      -
+        custom: []
+        status: 404
+        content: '{"message": "No query results for model [App\\Models\\Product] 99"}'
+        headers: []
+        description: 'Não encontrado'
+      -
+        custom: []
+        status: 422
+        content: '{"message": "O valor deve ser um número inteiro (em centavos).", "errors": {"amount": ["O valor deve ser um número inteiro (em centavos)."]}}'
+        headers: []
+        description: Validação
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PATCH
+    uri: 'api/products/{product_id}'
+    metadata:
+      custom: []
+      groupName: Produtos
+      groupDescription: |-
+
+        Gerenciamento do catálogo de produtos disponíveis para aposta.
+        Leitura: todos autenticados. Criação/Edição: roles `admin`, `manager`, `finance`. Exclusão: roles `admin`, `manager`.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Atualizar Produto'
+      description: 'Atualiza um produto existente. Envie apenas os campos que deseja alterar.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      product_id:
+        custom: []
+        name: product_id
+        description: 'The ID of the product.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      product:
+        custom: []
+        name: product
+        description: 'O ID do produto.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      product_id: 1
+      product: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        custom: []
+        name: name
+        description: 'Novo nome do produto (opcional). validation.max.'
+        required: false
+        example: 'Camiseta Premium Atualizada'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      amount:
+        custom: []
+        name: amount
+        description: 'Novo preço em centavos (opcional). Ex: 11990 = R$ 119,90. validation.min.'
+        required: false
+        example: 11990
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      name: 'Camiseta Premium Atualizada'
+      amount: 11990
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "id": 1,
+            "name": "Camiseta Premium Atualizada",
+            "amount": 11990,
+            "amount_brl": "R$ 119,90",
+            "created_at": "2026-01-01T00:00:00.000000Z"
+          }
+        headers: []
+        description: Sucesso
+      -
+        custom: []
+        status: 401
+        content: '{"message": "Unauthenticated."}'
+        headers: []
+        description: 'Não autenticado'
+      -
+        custom: []
+        status: 403
+        content: '{"message": "This action is unauthorized."}'
+        headers: []
+        description: 'Sem permissão'
+      -
+        custom: []
+        status: 404
+        content: '{"message": "No query results for model [App\\Models\\Product] 99"}'
+        headers: []
+        description: 'Não encontrado'
+      -
+        custom: []
+        status: 422
+        content: '{"message": "O valor deve ser um número inteiro (em centavos).", "errors": {"amount": ["O valor deve ser um número inteiro (em centavos)."]}}'
+        headers: []
+        description: Validação
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/products/{id}'
+    metadata:
+      custom: []
+      groupName: Produtos
+      groupDescription: |-
+
+        Gerenciamento do catálogo de produtos disponíveis para aposta.
+        Leitura: todos autenticados. Criação/Edição: roles `admin`, `manager`, `finance`. Exclusão: roles `admin`, `manager`.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Remover Produto'
+      description: 'Remove (soft-delete) um produto do catálogo.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the product.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      product:
+        custom: []
+        name: product
+        description: 'O ID do produto.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+      product: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"message": "Produto removido com sucesso."}'
+        headers: []
+        description: Sucesso
+      -
+        custom: []
+        status: 401
+        content: '{"message": "Unauthenticated."}'
+        headers: []
+        description: 'Não autenticado'
+      -
+        custom: []
+        status: 403
+        content: '{"message": "This action is unauthorized."}'
+        headers: []
+        description: 'Sem permissão'
+      -
+        custom: []
+        status: 404
+        content: '{"message": "No query results for model [App\\Models\\Product] 99"}'
+        headers: []
+        description: 'Não encontrado'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

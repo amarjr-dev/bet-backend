@@ -1,0 +1,176 @@
+name: Clientes
+description: |-
+
+  Consulta de clientes cadastrados automaticamente ao realizar compras.
+  Requer roles `admin`, `manager` ou `finance`.
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/clients
+    metadata:
+      custom: []
+      groupName: Clientes
+      groupDescription: |-
+
+        Consulta de clientes cadastrados automaticamente ao realizar compras.
+        Requer roles `admin`, `manager` ou `finance`.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Listar Clientes'
+      description: 'Retorna a lista paginada de clientes (20 por página).'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "current_page": 1,
+            "data": [
+              {"id": 1, "name": "João da Silva", "email": "joao@email.com", "transactions": [], "created_at": "2026-01-01T00:00:00.000000Z"}
+            ],
+            "per_page": 20,
+            "total": 1
+          }
+        headers: []
+        description: Sucesso
+      -
+        custom: []
+        status: 401
+        content: '{"message": "Unauthenticated."}'
+        headers: []
+        description: 'Não autenticado'
+      -
+        custom: []
+        status: 403
+        content: '{"message": "This action is unauthorized."}'
+        headers: []
+        description: 'Sem permissão'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/clients/{id}'
+    metadata:
+      custom: []
+      groupName: Clientes
+      groupDescription: |-
+
+        Consulta de clientes cadastrados automaticamente ao realizar compras.
+        Requer roles `admin`, `manager` ou `finance`.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Exibir Cliente'
+      description: 'Retorna os detalhes de um cliente com seu histórico completo de transações.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the client.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      client:
+        custom: []
+        name: client
+        description: 'O ID do cliente.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 16
+      client: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "id": 1,
+            "name": "João da Silva",
+            "email": "joao@email.com",
+            "transactions": [
+              {
+                "id": 1,
+                "status": "approved",
+                "amount": 19998,
+                "card_last_numbers": "1234",
+                "external_id": "ext_abc123",
+                "gateway": {"id": 1, "name": "Gateway Principal"},
+                "products": [
+                  {"product_id": 1, "product_name": "Camiseta Premium", "quantity": 2, "unit_price": 9999, "subtotal": 19998}
+                ],
+                "created_at": "2026-03-11T00:00:00.000000Z"
+              }
+            ],
+            "created_at": "2026-01-01T00:00:00.000000Z"
+          }
+        headers: []
+        description: Sucesso
+      -
+        custom: []
+        status: 401
+        content: '{"message": "Unauthenticated."}'
+        headers: []
+        description: 'Não autenticado'
+      -
+        custom: []
+        status: 403
+        content: '{"message": "This action is unauthorized."}'
+        headers: []
+        description: 'Sem permissão'
+      -
+        custom: []
+        status: 404
+        content: '{"message": "No query results for model [App\\Models\\Client] 99"}'
+        headers: []
+        description: 'Não encontrado'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null

@@ -1,0 +1,288 @@
+name: Transações
+description: |-
+
+  Consulta e gerenciamento de transações de pagamento. Requer roles `admin` ou `finance`.
+  O endpoint de compra (`POST /api/purchases`) é público e está documentado no grupo **Compras**.
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/transactions
+    metadata:
+      custom: []
+      groupName: Transações
+      groupDescription: |-
+
+        Consulta e gerenciamento de transações de pagamento. Requer roles `admin` ou `finance`.
+        O endpoint de compra (`POST /api/purchases`) é público e está documentado no grupo **Compras**.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Listar Transações'
+      description: 'Retorna a lista paginada de transações (20 por página), da mais recente para a mais antiga.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "current_page": 1,
+            "data": [
+              {
+                "id": 1,
+                "status": "approved",
+                "amount": 19998,
+                "card_last_numbers": "4242",
+                "external_id": "ext_abc123",
+                "gateway": {"id": 1, "name": "Gateway Principal", "driver": "gateway1"},
+                "client": {"id": 1, "name": "João da Silva", "email": "joao@email.com"},
+                "products": [
+                  {"product_id": 1, "product_name": "Camiseta Premium", "quantity": 2, "unit_price": 9999, "subtotal": 19998}
+                ],
+                "created_at": "2026-03-11T00:00:00.000000Z"
+              }
+            ],
+            "per_page": 20,
+            "total": 1
+          }
+        headers: []
+        description: Sucesso
+      -
+        custom: []
+        status: 401
+        content: '{"message": "Unauthenticated."}'
+        headers: []
+        description: 'Não autenticado'
+      -
+        custom: []
+        status: 403
+        content: '{"message": "This action is unauthorized."}'
+        headers: []
+        description: 'Sem permissão'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/transactions/{id}'
+    metadata:
+      custom: []
+      groupName: Transações
+      groupDescription: |-
+
+        Consulta e gerenciamento de transações de pagamento. Requer roles `admin` ou `finance`.
+        O endpoint de compra (`POST /api/purchases`) é público e está documentado no grupo **Compras**.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Exibir Transação'
+      description: 'Retorna os detalhes completos de uma transação, incluindo cliente, gateway e produtos.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'The ID of the transaction.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      transaction:
+        custom: []
+        name: transaction
+        description: 'O ID da transação.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 16
+      transaction: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "id": 1,
+            "status": "approved",
+            "amount": 19998,
+            "card_last_numbers": "4242",
+            "external_id": "ext_abc123",
+            "gateway": {"id": 1, "name": "Gateway Principal", "driver": "gateway1"},
+            "client": {"id": 1, "name": "João da Silva", "email": "joao@email.com"},
+            "products": [
+              {"product_id": 1, "product_name": "Camiseta Premium", "quantity": 2, "unit_price": 9999, "subtotal": 19998}
+            ],
+            "created_at": "2026-03-11T00:00:00.000000Z"
+          }
+        headers: []
+        description: Sucesso
+      -
+        custom: []
+        status: 401
+        content: '{"message": "Unauthenticated."}'
+        headers: []
+        description: 'Não autenticado'
+      -
+        custom: []
+        status: 403
+        content: '{"message": "This action is unauthorized."}'
+        headers: []
+        description: 'Sem permissão'
+      -
+        custom: []
+        status: 404
+        content: '{"message": "No query results for model [App\\Models\\Transaction] 99"}'
+        headers: []
+        description: 'Não encontrado'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: 'api/transactions/{transaction_id}/refund'
+    metadata:
+      custom: []
+      groupName: Transações
+      groupDescription: |-
+
+        Consulta e gerenciamento de transações de pagamento. Requer roles `admin` ou `finance`.
+        O endpoint de compra (`POST /api/purchases`) é público e está documentado no grupo **Compras**.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Reembolsar Transação'
+      description: |-
+        Solicita o reembolso de uma transação aprovada. Apenas transações com status `approved` podem ser reembolsadas.
+        O reembolso é processado no gateway de origem e o status é atualizado para `refunded`.
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_TOKEN}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      transaction_id:
+        custom: []
+        name: transaction_id
+        description: 'The ID of the transaction.'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      transaction:
+        custom: []
+        name: transaction
+        description: 'O ID da transação.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      transaction_id: 16
+      transaction: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "id": 1,
+            "status": "refunded",
+            "amount": 19998,
+            "card_last_numbers": "4242",
+            "external_id": "ext_abc123",
+            "gateway": {"id": 1, "name": "Gateway Principal", "driver": "gateway1"},
+            "client": {"id": 1, "name": "João da Silva", "email": "joao@email.com"},
+            "products": [
+              {"product_id": 1, "product_name": "Camiseta Premium", "quantity": 2, "unit_price": 9999, "subtotal": 19998}
+            ],
+            "created_at": "2026-03-11T00:00:00.000000Z"
+          }
+        headers: []
+        description: Reembolsado
+      -
+        custom: []
+        status: 401
+        content: '{"message": "Unauthenticated."}'
+        headers: []
+        description: 'Não autenticado'
+      -
+        custom: []
+        status: 403
+        content: '{"message": "This action is unauthorized."}'
+        headers: []
+        description: 'Sem permissão'
+      -
+        custom: []
+        status: 404
+        content: '{"message": "No query results for model [App\\Models\\Transaction] 99"}'
+        headers: []
+        description: 'Não encontrado'
+      -
+        custom: []
+        status: 422
+        content: '{"message": "Apenas transações aprovadas podem ser reembolsadas."}'
+        headers: []
+        description: 'Não reembolsável'
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
