@@ -1,0 +1,81 @@
+services:
+
+  # ── Aplicação PHP-FPM ──────────────────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        uid: ${UID:-1000}
+    image: localhost/bet-backend_app:latest
+    container_name: bet_app_dev
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html          # hot-reload: qualquer alteração no host é refletida imediatamente
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini  # hot-reload das configs PHP
+    environment:
+      APP_ENV: local
+      PHP_IDE_CONFIG: "serverName=bet-backend"
+    networks:
+      - bet_network
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # ── Nginx ──────────────────────────────────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    container_name: bet_nginx_dev
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - bet_network
+    depends_on:
+      - app
+
+  # ── MySQL 8.4 ─────────────────────────────────────────────────────────────
+  mysql:
+    image: mysql:8.4
+    container_name: bet_mysql_dev
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root_secret}
+      MYSQL_DATABASE: ${DB_DATABASE:-bet_backend}
+      MYSQL_USER: ${DB_USERNAME:-bet_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-bet_secret}
+    ports:
+      - "3306:3306"
+    volumes:
+      - bet_mysql_data:/var/lib/mysql
+    networks:
+      - bet_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-root_secret}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ── Gateways Mock ─────────────────────────────────────────────────────────
+  gateways-mock:
+    image: matheusprotzen/gateways-mock
+    container_name: bet_gateways_mock
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+      - "3002:3002"
+    networks:
+      - bet_network
+
+networks:
+  bet_network:
+    driver: bridge
+
+volumes:
+  bet_mysql_data:
+    driver: local

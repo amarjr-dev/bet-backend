@@ -1,0 +1,90 @@
+FROM php:8.3-fpm-alpine AS builder
+
+# Instalar dependências de build
+RUN apk add --no-cache \
+    git \
+    curl \
+    libpng-dev \
+    oniguruma-dev \
+    libxml2-dev \
+    libzip-dev \
+    icu-dev \
+    zip \
+    unzip \
+    $PHPIZE_DEPS
+
+# Instalar extensões PHP
+RUN docker-php-ext-install \
+    pdo_mysql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    zip \
+    xml \
+    intl \
+    opcache
+
+# Instalar Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/html
+
+# Copiar apenas arquivos de dependências primeiro (cache de layers)
+COPY src/composer.json src/composer.lock ./
+
+# Instala com dev para poder gerar a documentação (Scribe)
+RUN composer install --optimize-autoloader --no-scripts --no-interaction
+
+# Copiar código da aplicação
+COPY src/ .
+
+# Gerar documentação OpenAPI com Scribe (requer dev deps)
+RUN php artisan scribe:generate --no-interaction 2>/dev/null || true \
+    && chmod -R 755 storage/app/private/scribe 2>/dev/null || true
+
+# Remover dev deps e reoptimizar para produção
+RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction \
+    && composer dump-autoload --optimize --no-dev
+
+# ─────────────────────────────────────────────
+FROM php:8.3-fpm-alpine AS production
+
+RUN apk add --no-cache \
+    libpng-dev \
+    oniguruma-dev \
+    libxml2-dev \
+    libzip-dev \
+    icu-dev
+
+RUN docker-php-ext-install \
+    pdo_mysql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    zip \
+    xml \
+    intl \
+    opcache
+
+ARG user=appuser
+ARG uid=1000
+
+RUN adduser -D -u $uid -h /home/$user $user \
+    && addgroup $user www-data
+
+WORKDIR /var/www/html
+
+# Copiar aplicação do estágio de build (sem dev deps)
+COPY --from=builder --chown=$user:www-data /var/www/html .
+
+COPY docker/php/local.ini /usr/local/etc/php/conf.d/local.ini
+COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+
+USER $user
+
+EXPOSE 9000
+CMD ["php-fpm"]
