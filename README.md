@@ -156,3 +156,28 @@ O `PaymentGatewayService` busca os gateways ativos ordenados por prioridade e te
 ---
 
 
+## Futuras Implementações
+
+`Repository Patterns` - Sugestão de implementação se a API crescer, as regras de negócios ficarem complexas e o desenvolvimento também for orientado a testes.
+
+Segue os prós e contras que norteará a decisão quanto a futura implementação ou não.
+
+### Prós
+- **Testabilidade real** - Mockar o repositório nos testes unitários sem tocar no banco.
+
+- **Alternar fonte de dados** - Buscar dados de uma API externa, Redis ou outro apenas mudando a implementação, sem alterar o restante do código.
+
+- **Centralizar queries complexas** - centralizar queries com muitos join, with, filter para melhor manutenibilidade.
+
+### Contras
+- **Overhead em pequenas APIs/MVP** - Um CRUD básico com 5 models aumenta para 10+ arquivos extras sem necessidade.
+
+- **Mais arquivos, menos direção** - Mais camadas para debbug, maior curva de entendimento do projeto para os iniciantes.
+
+- **Flaso "clean architecture"** - Injeção do Model em vários lugares do repository patterns, tornando a abstração inútil.
+
+`Observabilidade`- para ter a capacidade de entender o que está acontecendo dentro da aplicação a partir dos dados que ela emite.
+
+- Logs centralizados: mostra o que aconteceu.
+- Métricas: com que frequência/intensidade que acontece.
+- Traces: por onde o request passou e quanto tempo levou.
