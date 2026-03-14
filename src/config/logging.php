@@ -58,6 +58,11 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        'viu' => [
+            'driver' => 'custom',
+            'via'    => App\Logging\CreateViuLogger::class,
+        ],
+
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),

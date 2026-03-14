@@ -28,11 +28,26 @@ class PurchaseRequest extends FormRequest
     public function bodyParameters(): array
     {
         return [
-            'client.name'       => ['description' => 'Nome igual do cartão.', 'example' => 'João da Silva'],
-            'client.email'      => ['description' => 'E-mail usado no cadastro.', 'example' => 'joao@email.com'],
-            'client.cardNumber' => ['description' => 'Número do cartão de crédito (16 dígitos, apenas números).', 'example' => '4444333311112222'],
-            'client.cvv'        => ['description' => 'Código de segurança do cartão (3 dígitos).', 'example' => '123'],
-            'products.*.id'     => ['description' => 'ID do produto.', 'example' => 1],
+            'client'              => [
+                'description' => 'Dados do cliente e do cartão de crédito.',
+                'example'     => [
+                    'name'       => 'João da Silva',
+                    'email'      => 'joao@email.com',
+                    'cardNumber' => '4444333311112222',
+                    'cvv'        => '123',
+                ],
+            ],
+            'client.name'         => ['description' => 'Nome igual ao do cartão.', 'example' => 'João da Silva'],
+            'client.email'        => ['description' => 'E-mail do cliente.', 'example' => 'joao@email.com'],
+            'client.cardNumber'   => ['description' => 'Número do cartão de crédito (16 dígitos, apenas números).', 'example' => '4444333311112222'],
+            'client.cvv'          => ['description' => 'Código de segurança do cartão (3 dígitos).', 'example' => '123'],
+            'products'            => [
+                'description' => 'Lista de produtos e quantidades.',
+                'example'     => [
+                    ['id' => 1, 'quantity' => 2],
+                ],
+            ],
+            'products.*.id'       => ['description' => 'ID do produto.', 'example' => 1],
             'products.*.quantity' => ['description' => 'Quantidade do produto.', 'example' => 2],
         ];
     }

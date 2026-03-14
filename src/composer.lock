@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "055a4d20debf5e386d6dac29d3218e18",
+    "content-hash": "21bf04ee75afca1098400ff5c23a07d3",
     "packages": [
         {
             "name": "brick/math",
@@ -5913,6 +5913,77 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/v2.4.0"
             },
             "time": "2025-12-02T11:56:42+00:00"
+        },
+        {
+            "name": "viu/viu-laravel",
+            "version": "0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/amarjr-dev/viu-laravel.git",
+                "reference": "1075f4bed29dc496a64191d4fd147d95adf46e5c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/amarjr-dev/viu-laravel/zipball/1075f4bed29dc496a64191d4fd147d95adf46e5c",
+                "reference": "1075f4bed29dc496a64191d4fd147d95adf46e5c",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.0",
+                "illuminate/http": "^10.0|^11.0|^12.0",
+                "illuminate/log": "^10.0|^11.0|^12.0",
+                "illuminate/support": "^10.0|^11.0|^12.0",
+                "monolog/monolog": "^3.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^8.0|^9.0|^10.0",
+                "phpunit/phpunit": "^10.5|^11.0"
+            },
+            "suggest": {
+                "longlang/phpkafka": "Required for Kafka transport mode (composer require longlang/phpkafka)"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Viu": "Viu\\ViuLaravel\\Facades\\Viu"
+                    },
+                    "providers": [
+                        "Viu\\ViuLaravel\\ViuServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Viu\\ViuLaravel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "amar.jr",
+                    "email": "amarjr.dev@gmail.com"
+                }
+            ],
+            "description": "Laravel SDK for Viu logging platform — Monolog Handler, Facade, HTTP/Kafka transport",
+            "keywords": [
+                "kafka",
+                "laravel",
+                "logging",
+                "loki",
+                "monolog",
+                "observability",
+                "viu"
+            ],
+            "support": {
+                "issues": "https://github.com/amarjr-dev/viu-laravel/issues",
+                "source": "https://github.com/amarjr-dev/viu-laravel/tree/v0.2.0"
+            },
+            "time": "2026-03-14T06:01:30+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

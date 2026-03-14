@@ -6,6 +6,7 @@ use App\Http\Requests\UpdateGatewayPriorityRequest;
 use App\Http\Resources\GatewayResource;
 use App\Models\Gateway;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @group Gateways
@@ -55,6 +56,13 @@ class GatewayController extends Controller
     {
         $gateway->update(['is_active' => ! $gateway->is_active]);
 
+        Log::info('Status do gateway alterado.', [
+            'gateway_id'   => $gateway->id,
+            'gateway_name' => $gateway->name,
+            'is_active'    => $gateway->is_active,
+            'changed_by'   => auth()->id(),
+        ]);
+
         return response()->json(new GatewayResource($gateway));
     }
 
@@ -80,6 +88,13 @@ class GatewayController extends Controller
     public function updatePriority(UpdateGatewayPriorityRequest $request, Gateway $gateway): JsonResponse
     {
         $gateway->update(['priority' => $request->input('priority')]);
+
+        Log::info('Prioridade do gateway atualizada.', [
+            'gateway_id'   => $gateway->id,
+            'gateway_name' => $gateway->name,
+            'new_priority' => $gateway->priority,
+            'changed_by'   => auth()->id(),
+        ]);
 
         return response()->json(new GatewayResource($gateway));
     }
