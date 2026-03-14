@@ -107,7 +107,7 @@ class PaymentGatewayServiceTest extends TestCase
     public function test_charge_lanca_excecao_sem_gateways_ativos(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageMatches('/Nenhum gateway/');
+        $this->expectExceptionMessageMatches('/gateway de pagamento/');
 
         $service = new PaymentGatewayService();
         $service->charge([

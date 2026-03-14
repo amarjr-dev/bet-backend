@@ -36,9 +36,11 @@ class PaymentGatewayService
                 return array_merge($result, ['gateway' => $gateway]);
             } catch (RuntimeException $e) {
                 $lastException = $e;
-                Log::warning("Gateway {$gateway->name} falhou na cobrança. Realizando cobrança no próximo gateway.", [
-                    'gateway_id' => $gateway->id,
-                    'error'      => $e->getMessage(),
+                Log::warning("Gateway {$gateway->name} falhou na cobrança. Tentando o próximo.", [
+                    'gateway_id'   => $gateway->id,
+                    'gateway_name' => $gateway->name,
+                    'driver'       => $gateway->driver,
+                    'error'        => $e->getMessage(),
                 ]);
             }
         }
@@ -66,6 +68,8 @@ class PaymentGatewayService
             Log::error("Falha ao reembolsar transação {$transaction->id} no gateway {$gateway->name}.", [
                 'transaction_id' => $transaction->id,
                 'external_id'    => $transaction->external_id,
+                'gateway_name'   => $gateway->name,
+                'driver'         => $gateway->driver,
                 'error'          => $e->getMessage(),
             ]);
             throw $e;
