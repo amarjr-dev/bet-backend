@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ClientResource;
 use App\Models\Client;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @group Clientes
@@ -32,6 +33,8 @@ class ClientController extends Controller
      */
     public function index(): JsonResponse
     {
+        Log::info('Listagem de clientes acessada.');
+
         $clients = Client::paginate(20);
 
         return response()->json($clients->through(fn($c) => new ClientResource($c)));
@@ -70,6 +73,10 @@ class ClientController extends Controller
      */
     public function show(Client $client): JsonResponse
     {
+        Log::info('Cliente consultado.', [
+            'client_id' => $client->id,
+        ]);
+
         $client->load(['transactions' => function ($query) {
             $query->with('gateway', 'products.product')->latest();
         }]);

@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @group Usuários
@@ -35,6 +36,8 @@ class UserController extends Controller
      */
     public function index(): JsonResponse
     {
+        Log::info('Listagem de usuários acessada.');
+
         return response()->json(UserResource::collection(User::paginate(20)));
     }
 
@@ -57,6 +60,11 @@ class UserController extends Controller
     public function store(StoreUserRequest $request): JsonResponse
     {
         $user = User::create($request->validated());
+
+        Log::info('Usuário criado.', [
+            'new_user_id' => $user->id,
+            'role'        => $user->role,
+        ]);
 
         return response()->json(new UserResource($user), 201);
     }
@@ -81,6 +89,10 @@ class UserController extends Controller
      */
     public function show(User $user): JsonResponse
     {
+        Log::info('Usuário consultado.', [
+            'target_user_id' => $user->id,
+        ]);
+
         return response()->json(new UserResource($user));
     }
 
@@ -107,6 +119,11 @@ class UserController extends Controller
     {
         $user->update($request->validated());
 
+        Log::info('Usuário atualizado.', [
+            'target_user_id' => $user->id,
+            'fields'         => array_keys($request->validated()),
+        ]);
+
         return response()->json(new UserResource($user));
     }
 
@@ -131,6 +148,10 @@ class UserController extends Controller
         }
 
         $user->delete();
+
+        Log::info('Usuário removido.', [
+            'deleted_user_id' => $user->id,
+        ]);
 
         return response()->json(['message' => 'Usuário removido com sucesso.']);
     }

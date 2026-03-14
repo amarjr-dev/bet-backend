@@ -1,5 +1,11 @@
 <?php
 
+// Scribe é uma dependência de desenvolvimento. Em produção (sem o pacote instalado),
+// retorna array vazio para evitar erros ao carregar a config.
+if (!class_exists(\Knuckles\Scribe\Config\AuthIn::class)) {
+    return [];
+}
+
 use Knuckles\Scribe\Config\AuthIn;
 use Knuckles\Scribe\Config\Defaults;
 use Knuckles\Scribe\Extracting\Strategies;
@@ -68,7 +74,7 @@ return [
     // - "static" will generate a static HTMl page in the /public/docs folder,
     // - "laravel" will generate the documentation as a Blade view, so you can add routing and authentication.
     // - "external_static" and "external_laravel" do the same as above, but pass the OpenAPI spec as a URL to an external UI template
-    'type' => 'external_laravel',
+    'type' => 'external_static',
 
     // See https://scribe.knuckles.wtf/laravel/reference/config#theme for supported options
     'theme' => 'scalar',
@@ -249,16 +255,19 @@ return [
         'bodyParameters' => [
             ...Defaults::BODY_PARAMETERS_STRATEGIES,
         ],
-        'responses' => configureStrategy(
-            Defaults::RESPONSES_STRATEGIES,
-            Strategies\Responses\ResponseCalls::withSettings(
-                only: ['GET *'],
-                // Recommended: disable debug mode in response calls to avoid error stack traces in responses
-                config: [
-                    'app.debug' => false,
-                ]
-            )
-        ),
+        // Durante o build Docker (SCRIBE_DISABLE_RESPONSE_CALLS=true) o MySQL não está acessível,
+        // então desabilitamos os response calls. Em dev/prod com DB disponível, eles são habilitados.
+        'responses' => env('SCRIBE_DISABLE_RESPONSE_CALLS')
+            ? [...Defaults::RESPONSES_STRATEGIES]
+            : configureStrategy(
+                Defaults::RESPONSES_STRATEGIES,
+                Strategies\Responses\ResponseCalls::withSettings(
+                    only: ['GET *'],
+                    config: [
+                        'app.debug' => false,
+                    ]
+                )
+            ),
         'responseFields' => [
             ...Defaults::RESPONSE_FIELDS_STRATEGIES,
         ],

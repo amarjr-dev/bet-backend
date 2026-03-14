@@ -86,7 +86,13 @@ class AuthController extends Controller
      */
     public function logout(): JsonResponse
     {
-        auth()->user()->currentAccessToken()->delete();
+        $user = auth()->user();
+
+        $user->currentAccessToken()->delete();
+
+        Log::info('Logout realizado.', [
+            'user_id' => $user->id,
+        ]);
 
         return response()->json(['message' => 'Sessão encerrada.']);
     }

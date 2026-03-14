@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @group Produtos
@@ -57,6 +58,11 @@ class ProductController extends Controller
     {
         $product = Product::create($request->validated());
 
+        Log::info('Produto criado.', [
+            'product_id' => $product->id,
+            'name'       => $product->name,
+        ]);
+
         return response()->json(new ProductResource($product), 201);
     }
 
@@ -105,6 +111,11 @@ class ProductController extends Controller
     {
         $product->update($request->validated());
 
+        Log::info('Produto atualizado.', [
+            'product_id' => $product->id,
+            'fields'     => array_keys($request->validated()),
+        ]);
+
         return response()->json(new ProductResource($product));
     }
 
@@ -123,6 +134,11 @@ class ProductController extends Controller
     public function destroy(Product $product): JsonResponse
     {
         $product->delete();
+
+        Log::info('Produto removido.', [
+            'product_id' => $product->id,
+            'name'       => $product->name,
+        ]);
 
         return response()->json(['message' => 'Produto removido com sucesso.']);
     }

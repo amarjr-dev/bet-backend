@@ -159,6 +159,8 @@ class TransactionController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        Log::info('Listagem de transações acessada.');
+
         $transactions = Transaction::with('client', 'gateway', 'products.product')
             ->latest()
             ->paginate(20);
@@ -193,6 +195,10 @@ class TransactionController extends Controller
     public function show(Transaction $transaction): JsonResponse
     {
         $transaction->load('client', 'gateway', 'products.product');
+
+        Log::info('Transação consultada.', [
+            'transaction_id' => $transaction->id,
+        ]);
 
         return response()->json(new TransactionResource($transaction));
     }

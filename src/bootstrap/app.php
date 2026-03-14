@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\CheckRole;
+use App\Http\Middleware\LogUserContext;
 use Illuminate\Auth\AuthenticationException;
 use Viu\ViuLaravel\Middleware\ViuCorrelationMiddleware;
 use Illuminate\Foundation\Application;
@@ -24,6 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => CheckRole::class,
         ]);
         $middleware->appendToGroup('api', ViuCorrelationMiddleware::class);
+        $middleware->appendToGroup('api', LogUserContext::class);
         $middleware->throttleApi();
     })
     ->withExceptions(function (Exceptions $exceptions): void {
