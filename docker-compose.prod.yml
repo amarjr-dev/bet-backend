@@ -1,6 +1,5 @@
 services:
 
-  # ── Aplicação PHP-FPM (produção otimizada) ────────────────────────────────
   app:
     build:
       context: .
@@ -21,7 +20,6 @@ services:
       mysql:
         condition: service_healthy
 
-  # ── Nginx ──────────────────────────────────────────────────────────────────
   nginx:
     image: nginx:alpine
     container_name: bet_nginx_prod
@@ -35,7 +33,6 @@ services:
     depends_on:
       - app
 
-  # ── MySQL 8.4 (porta não exposta externamente) ────────────────────────────
   mysql:
     image: mysql:8.4
     container_name: bet_mysql_prod
@@ -48,7 +45,7 @@ services:
     volumes:
       - bet_mysql_prod_data:/var/lib/mysql
     networks:
-      - bet_network    # porta NÃO exposta externamente em produção
+      - bet_network
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD}"]
       interval: 10s
