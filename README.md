@@ -171,6 +171,8 @@ O `PaymentGatewayService` busca os gateways ativos ordenados por prioridade e te
 
 ## Futuras Implementações
 
+`CI/CD` - Implementação fluxo de Integração e Deploy contínuos para automatização do processo.
+
 `Repository Patterns` - Sugestão de implementação se a API crescer, as regras de negócios ficarem complexas e o desenvolvimento também for orientado a testes.
 
 Segue os prós e contras que norteará a decisão quanto a futura implementação ou não.
@@ -202,3 +204,16 @@ Segue os prós e contras que norteará a decisão quanto a futura implementaçã
   `e-mail`: mario@betalent.com
 
   `Senha`: be@T2025
+
+
+## Dificuldates Encontradas
+
+O Laravel 12 é um framework apaixonante e não apresenta muitos desafios, pois tem baterias inclusas como o poderoso Eloquent ORM. Entretanto fiquei tentato a implementar o Repository Pattern, mas no cenário de um MVP seria complicar demais algo simple. 
+
+E durante o desenvolvimento encontrei, fora do escopo dos requisitos solicitados, dificuldades para adicionar observabilidade em uma plataforma que estou desenvolvendo para uso pessoal, a princípio.
+
+Por isso foi um desafio criar uma lib php compatível com Laravel 12+ e usá-la no projeto. Vibe Coding me ajudou nesse sentido, especialmente tirando algumas dúvidas técnicas e acelerando essa parte do desenvolvimento. 
+
+Passado os obstáculos, consegui publicar a lib no [packagist.org](https://packagist.org/packages/viu/viu-laravel) e a API, está enviando os logs para a plataforma Viu com riqueza de informações. 
+
+É possível visualizar e testar o envio de logs por meio do passo a passo e credenciais da sessão `Observabilidade` anterior a essa. 
