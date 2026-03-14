@@ -7,6 +7,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @group Autenticação
@@ -48,12 +49,22 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
+            Log::warning('Tentativa de login com credenciais inválidas.', [
+                'email' => $request->email,
+            ]);
+
             return response()->json(['message' => 'Credenciais inválidas.'], 401);
         }
 
         // Revoga tokens antigos e emite um novo
         $user->tokens()->delete();
         $token = $user->createToken('api-token')->plainTextToken;
+
+        Log::info('Login realizado com sucesso.', [
+            'user_id' => $user->id,
+            'email'   => $user->email,
+            'role'    => $user->role,
+        ]);
 
         return response()->json([
             'token' => $token,

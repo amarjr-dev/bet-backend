@@ -36,9 +36,13 @@ endpoints:
       client:
         custom: []
         name: client
-        description: ''
+        description: 'Dados do cliente e do cartão de crédito.'
         required: true
-        example: []
+        example:
+          name: 'João da Silva'
+          email: joao@email.com
+          cardNumber: '4444333311112222'
+          cvv: '123'
         type: object
         enumValues: []
         exampleWasSpecified: false
@@ -47,7 +51,7 @@ endpoints:
       client.name:
         custom: []
         name: client.name
-        description: 'Nome igual do cartão. validation.max.'
+        description: 'Nome igual ao do cartão. validation.max.'
         required: true
         example: 'João da Silva'
         type: string
@@ -58,7 +62,7 @@ endpoints:
       client.email:
         custom: []
         name: client.email
-        description: 'E-mail usado no cadastro. validation.email validation.max.'
+        description: 'E-mail do cliente. validation.email validation.max.'
         required: true
         example: joao@email.com
         type: string
@@ -91,10 +95,12 @@ endpoints:
       products:
         custom: []
         name: products
-        description: validation.min.
+        description: 'Lista de produtos e quantidades. validation.min.'
         required: true
         example:
-          - []
+          -
+            id: 1
+            quantity: 2
         type: 'object[]'
         enumValues: []
         exampleWasSpecified: false

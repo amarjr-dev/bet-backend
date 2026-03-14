@@ -11,6 +11,7 @@ use App\Services\PaymentGatewayService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @group Transações
@@ -80,6 +81,12 @@ class TransactionController extends Controller
             'cvv'        => $clientData['cvv'],
         ];
 
+        Log::info('Compra iniciada.', [
+            'client_email' => $clientData['email'],
+            'amount'       => $amount,
+            'product_ids'  => $productIds,
+        ]);
+
         $result = $this->gatewayService->charge($payload);
 
         $transaction = DB::transaction(function () use ($clientData, $productsData, $products, $amount, $result) {
@@ -107,6 +114,14 @@ class TransactionController extends Controller
 
             return $transaction;
         });
+
+        Log::info('Compra concluída com sucesso.', [
+            'transaction_id' => $transaction->id,
+            'external_id'    => $result['external_id'],
+            'gateway'        => $result['gateway']->name,
+            'amount'         => $amount,
+            'client_email'   => $clientData['email'],
+        ]);
 
         return response()->json(
             new TransactionResource($transaction->load('client', 'gateway', 'products.product')),
@@ -214,9 +229,19 @@ class TransactionController extends Controller
             return response()->json(['message' => 'Apenas transações aprovadas podem ser reembolsadas.'], 422);
         }
 
+        Log::info('Reembolso solicitado.', [
+            'transaction_id' => $transaction->id,
+            'requested_by'   => auth()->id(),
+        ]);
+
         $this->gatewayService->refund($transaction);
 
         $transaction->update(['status' => 'refunded']);
+
+        Log::info('Reembolso concluído com sucesso.', [
+            'transaction_id' => $transaction->id,
+            'gateway'        => $transaction->gateway->name,
+        ]);
 
         return response()->json(
             new TransactionResource($transaction->load('client', 'gateway', 'products.product'))
