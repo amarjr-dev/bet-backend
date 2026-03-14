@@ -20,6 +20,7 @@ Autenticação via Sanctum, RBAC (Controle de acesso baseado em perfis) com 4 ro
 | GuzzleHTTP | ^7.0 |
 | PHPUnit | ^11.0 |
 | Scalar (laravel-scribe) | 1.0 |
+| Viu-laravel | 0.2.0 |
 
 ## Instalação e execução
 
