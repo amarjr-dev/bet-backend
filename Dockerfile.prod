@@ -34,11 +34,13 @@ RUN composer install --optimize-autoloader --no-scripts --no-interaction
 
 COPY src/ .
 
-RUN php artisan scribe:generate --no-interaction 2>/dev/null || true \
-    && chmod -R 755 storage/app/private/scribe 2>/dev/null || true
+RUN php artisan package:discover --ansi \
+    && SCRIBE_DISABLE_RESPONSE_CALLS=true php artisan scribe:generate --no-interaction
 
-RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction \
-    && composer dump-autoload --optimize --no-dev
+RUN rm -f config/scribe.php \
+    && rm -rf vendor bootstrap/cache/packages.php bootstrap/cache/services.php \
+    && composer install --no-dev --optimize-autoloader --no-scripts --no-interaction \
+    && php artisan package:discover --ansi
 
 FROM php:8.3-fpm-alpine AS production
 
