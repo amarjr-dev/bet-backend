@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "df9562fbf3578befa08bf9d76e1dd3b3",
+    "content-hash": "21bf04ee75afca1098400ff5c23a07d3",
     "packages": [
         {
             "name": "brick/math",
@@ -5917,10 +5917,16 @@
         {
             "name": "viu/viu-laravel",
             "version": "0.2.0",
-            "dist": {
-                "type": "path",
-                "url": "../packages",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/amarjr-dev/viu-laravel.git",
                 "reference": "1075f4bed29dc496a64191d4fd147d95adf46e5c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/amarjr-dev/viu-laravel/zipball/1075f4bed29dc496a64191d4fd147d95adf46e5c",
+                "reference": "1075f4bed29dc496a64191d4fd147d95adf46e5c",
+                "shasum": ""
             },
             "require": {
                 "guzzlehttp/guzzle": "^7.0",
@@ -5940,12 +5946,12 @@
             "type": "library",
             "extra": {
                 "laravel": {
-                    "providers": [
-                        "Viu\\ViuLaravel\\ViuServiceProvider"
-                    ],
                     "aliases": {
                         "Viu": "Viu\\ViuLaravel\\Facades\\Viu"
-                    }
+                    },
+                    "providers": [
+                        "Viu\\ViuLaravel\\ViuServiceProvider"
+                    ]
                 }
             },
             "autoload": {
@@ -5953,11 +5959,7 @@
                     "Viu\\ViuLaravel\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Viu\\ViuLaravel\\Tests\\": "tests/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -5977,10 +5979,11 @@
                 "observability",
                 "viu"
             ],
-            "transport-options": {
-                "symlink": false,
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/amarjr-dev/viu-laravel/issues",
+                "source": "https://github.com/amarjr-dev/viu-laravel/tree/v0.2.0"
+            },
+            "time": "2026-03-14T06:01:30+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
