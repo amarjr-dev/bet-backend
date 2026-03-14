@@ -25,7 +25,8 @@ Autenticação via Sanctum, RBAC (Controle de acesso baseado em perfis) com 4 ro
 
 <details>
   <summary>Ambiente de Desenvolvimento</summary>
-    ```
+
+    ```bash
         
     # 1º Clone o repositório
     git clone <repo-url> bet-backend
@@ -46,11 +47,16 @@ Autenticação via Sanctum, RBAC (Controle de acesso baseado em perfis) com 4 ro
     # 6º Execute os testes
     # Os testes usam **SQLite em memória** e não afetam o banco principal.
     docker compose -f docker-compose.dev.yml exec app php artisan test
+
+    # ou use makefile
+    make dev-setup
+
     ```
 </details>
 <details>
   <summary>Ambiente de Produção</summary>
-    ```
+
+    ```bash
 
     # 1º Clone o repositório
     git clone <repo-url> bet-backend
@@ -73,20 +79,26 @@ Autenticação via Sanctum, RBAC (Controle de acesso baseado em perfis) com 4 ro
 
     # 6º Executar migrations e seeders
     docker compose -f docker-compose.dev.yml exec app php artisan migrate:fresh --seed
+
+    # ou use makefile
+    make prod-setup
+
     ```
 </details>
 
 ## API Health Check
 Endpoint para verificação de integridade da API.
 
-  [http://localhost:8000/up](http://localhost:8000/up)
+- `Ambiente Local` - [http://localhost:8000/up](http://localhost:8000/up)
+- `Ambiente de Produção` - [http://91.99.238.75/up](http://91.99.238.75/up)
 
 
 
 ## Documentação da API - [Laravel Scribe](https://scalar.com/products/api-references/integrations/laravel-scribe)
 O Laravel Scribe é um pacote incrível para gerar arquivos OpenAPI a partir do código existente. Não são necessárias anotações complexas, o pacote simplesmente analisa o código.
 
-  [http://localhost:8000/docs](http://localhost:8000/docs)
+- `Ambiente Local` - [http://localhost:8000/docs](http://localhost:8000/docs)
+- `Ambiente de Produção` - [http://91.99.238.75/docs/](http://91.99.238.75/docs/)
 
   > Credenciais para testar na documentação
   >>| Email | Senha | Role |
@@ -176,7 +188,7 @@ Segue os prós e contras que norteará a decisão quanto a futura implementaçã
 
 - **Flaso "clean architecture"** - Injeção do Model em vários lugares do repository patterns, tornando a abstração inútil.
 
-`Observabilidade` ✅ **Implementada** — integração com a plataforma [Viu](https://github.com/amarjr-dev/viu-laravel) via SDK `viu/viu-laravel` (Monolog Handler + HTTP transport).
+`Observabilidade` ✅ **Implementada** — integração com a plataforma [Viu](http://91.99.238.75:3333/) via SDK [`viu/viu-laravel`](https://github.com/amarjr-dev/viu-laravel) (Monolog Handler + HTTP transport).
 
 - **Logs centralizados**: todos os eventos de negócio (login, compra, reembolso, alteração de gateway) são enviados ao Viu com `correlation_id`, `trace_id`, `span_id`, `file` e `line` automaticamente populados.
 - **Métricas**: com que frequência/intensidade que acontece.
