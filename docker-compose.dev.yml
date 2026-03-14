@@ -1,6 +1,5 @@
 services:
 
-  # ── Aplicação PHP-FPM ──────────────────────────────────────────────────────
   app:
     build:
       context: .
@@ -23,7 +22,6 @@ services:
       mysql:
         condition: service_healthy
 
-  # ── Nginx ──────────────────────────────────────────────────────────────────
   nginx:
     image: nginx:alpine
     container_name: bet_nginx_dev
@@ -38,7 +36,6 @@ services:
     depends_on:
       - app
 
-  # ── MySQL 8.4 ─────────────────────────────────────────────────────────────
   mysql:
     image: mysql:8.4
     container_name: bet_mysql_dev
@@ -61,7 +58,6 @@ services:
       retries: 5
       start_period: 30s
 
-  # ── Gateways Mock ─────────────────────────────────────────────────────────
   gateways-mock:
     image: matheusprotzen/gateways-mock
     container_name: bet_gateways_mock
